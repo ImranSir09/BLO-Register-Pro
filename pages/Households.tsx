@@ -348,7 +348,7 @@ const Households: React.FC = () => {
 
             <button
                 onClick={() => setView('add')}
-                className="fixed bottom-24 right-4 bg-primary text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-sky-600 transition-colors"
+                className="absolute bottom-6 right-6 bg-primary text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-sky-600 transition-colors z-20"
                 aria-label="Add new household"
             >
                 <PlusIcon className="w-8 h-8"/>

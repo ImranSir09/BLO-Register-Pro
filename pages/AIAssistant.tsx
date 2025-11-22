@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { GoogleGenAI } from "@google/genai";
 import { useHouseholds, useElections } from '../contexts/AppContexts';
@@ -93,7 +94,7 @@ const AIAssistant: React.FC = () => {
                 <div ref={chatEndRef} />
             </div>
 
-            <div className="p-4 pb-20 bg-slate-900 border-t border-slate-700">
+            <div className="p-4 pb-4 bg-slate-900 border-t border-slate-700">
                 <div className="flex items-center space-x-2">
                     <textarea
                         value={userInput}

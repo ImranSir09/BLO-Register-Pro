@@ -26,7 +26,8 @@ const App: React.FC = () => {
     }
   };
   
-  const mainClasses = `flex-grow overflow-y-auto pb-24 hide-scrollbar`;
+  // Removed pb-24 as nav is now static. Added relative for absolute positioning of children (like FABs).
+  const mainClasses = `flex-grow overflow-y-auto relative hide-scrollbar`;
 
   return (
     <AppProviders>
@@ -41,12 +42,7 @@ const App: React.FC = () => {
             {renderPage()}
           </main>
           
-          {/* Floating Assistant Button */}
-          {activePage !== 'AIAssistant' && (
-             <div className="absolute bottom-20 right-4 z-20">
-                {/* Optional FAB if needed later */}
-             </div>
-          )}
+          {/* Floating Assistant Button logic can go here if needed, or inside pages */}
 
           <BottomNav activePage={activePage} setActivePage={setActivePage} />
           <ToastContainer />

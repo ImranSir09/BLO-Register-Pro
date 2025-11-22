@@ -39,7 +39,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ activePage, setActivePage }) => {
         { page: 'Settings', label: 'Settings', icon: <SettingsIcon /> },
     ];
     return (
-        <nav className="absolute bottom-0 left-0 right-0 bg-slate-900/90 backdrop-blur-lg border-t border-slate-800 flex justify-around z-30 pb-safe pt-1 shadow-[0_-5px_20px_rgba(0,0,0,0.2)]">
+        <nav className="w-full bg-slate-900 border-t border-slate-800 flex justify-around z-30 py-2 shadow-[0_-5px_20px_rgba(0,0,0,0.2)] flex-shrink-0">
             {navItems.map(item => (
                 <NavItem
                     key={item.page}
