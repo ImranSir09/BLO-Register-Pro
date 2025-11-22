@@ -1,0 +1,5 @@
+{
+  "name": "BLO Register Pro",
+  "description": "A comprehensive, mobile-first web application for Booth Level Officers (BLOs) to digitally manage household census data and electoral roll information offline. It features data analysis, reporting, AI assistance, and secure cloud synchronization.",
+  "requestFramePermissions": []
+}
