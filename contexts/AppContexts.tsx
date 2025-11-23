@@ -139,6 +139,7 @@ export const useHouseholds = () => {
 interface ElectionContextType {
   voters: Voter[];
   setVoters: React.Dispatch<React.SetStateAction<Voter[]>>;
+  addVoter: (voter: Voter) => void;
   updateVoter: (voter: Voter) => void;
   updateVoterStatus: (voterId: string, status: VoterStatus) => void;
   linkVoterToMember: (voterId: string, memberId: string) => void;
@@ -151,6 +152,8 @@ export const ElectionProvider: React.FC<{ children: ReactNode }> = ({ children }
   const { households, updateMember } = useHouseholds();
   const { addToast } = useToast();
   
+  const addVoter = (voter: Voter) => setVoters(prev => [...prev, voter]);
+
   const updateVoter = (updated: Voter) => setVoters(prev => prev.map(v => v.id === updated.id ? updated : v));
   
   // Advanced Update: Syncs status to Census Member automatically
@@ -212,7 +215,7 @@ export const ElectionProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   return (
-    <ElectionContext.Provider value={{ voters, setVoters, updateVoter, updateVoterStatus, linkVoterToMember, autoLinkVoters }}>
+    <ElectionContext.Provider value={{ voters, setVoters, addVoter, updateVoter, updateVoterStatus, linkVoterToMember, autoLinkVoters }}>
       {children}
     </ElectionContext.Provider>
   );
