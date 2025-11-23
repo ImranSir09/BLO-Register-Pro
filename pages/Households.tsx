@@ -1,8 +1,8 @@
 
 import React, { useState, useMemo } from 'react';
 import { useHouseholds, useToast } from '../contexts/AppContexts';
-import type { Household, Member } from '../types';
-import { PlusIcon, ChevronDownIcon, SearchIcon, TrashIcon, EditIcon, UserPlusIcon, ArrowLeftIcon, HomeIcon, UsersIcon, SaveIcon, CheckIcon, XIcon, ChevronRightIcon } from '../components/Icons';
+import type { Household, Member, MemberStatus } from '../types';
+import { PlusIcon, ChevronDownIcon, SearchIcon, TrashIcon, EditIcon, UserPlusIcon, ArrowLeftIcon, HomeIcon, UsersIcon, SaveIcon, CheckIcon, XIcon, ChevronRightIcon, AlertTriangleIcon } from '../components/Icons';
 
 // --- Add/Edit Member Modal ---
 interface MemberModalProps {
@@ -19,6 +19,7 @@ const MemberModal: React.FC<MemberModalProps> = ({ isOpen, onClose, onSave, exis
     const [gender, setGender] = useState<'Male' | 'Female' | 'Other'>('Male');
     const [aadhar, setAadhar] = useState('');
     const [phone, setPhone] = useState('');
+    const [status, setStatus] = useState<MemberStatus>('Active');
     const { addToast } = useToast();
 
     React.useEffect(() => {
@@ -28,12 +29,14 @@ const MemberModal: React.FC<MemberModalProps> = ({ isOpen, onClose, onSave, exis
             setGender(existingMember.gender);
             setAadhar(existingMember.aadhar || '');
             setPhone(existingMember.phone || '');
+            setStatus(existingMember.status || 'Active');
         } else {
             setName('');
             setDob('');
             setGender('Male');
             setAadhar('');
             setPhone('');
+            setStatus('Active');
         }
     }, [existingMember, isOpen]);
 
@@ -54,6 +57,7 @@ const MemberModal: React.FC<MemberModalProps> = ({ isOpen, onClose, onSave, exis
             name, dob, gender, isHof,
             aadhar: isHof ? aadhar : undefined,
             phone: isHof ? phone : undefined,
+            status: status
         });
         onClose();
     };
@@ -72,6 +76,14 @@ const MemberModal: React.FC<MemberModalProps> = ({ isOpen, onClose, onSave, exis
                         <option>Female</option>
                         <option>Other</option>
                     </select>
+                    {existingMember && (
+                         <select value={status} onChange={e => setStatus(e.target.value as any)} className={inputClasses}>
+                            <option value="Active">Active</option>
+                            <option value="Expired">Expired</option>
+                            <option value="Shifted">Shifted</option>
+                            <option value="Duplicate">Duplicate</option>
+                        </select>
+                    )}
                     {isHof && (
                         <>
                             <input type="number" placeholder="Aadhar Number" value={aadhar} onChange={e => setAadhar(e.target.value)} className={inputClasses} />
@@ -102,6 +114,7 @@ const HouseholdCard: React.FC<{ household: Household }> = ({ household }) => {
     const [memberModalOpen, setMemberModalOpen] = useState(false);
     const [editingMember, setEditingMember] = useState<Member | undefined>(undefined);
     const hof = household.members.find(m => m.isHof);
+    const activeMembersCount = household.members.filter(m => m.status === 'Active' || !m.status).length;
 
     const handleDeleteHousehold = () => {
         if (window.confirm(`Are you sure you want to delete household ${household.houseNo}?`)) {
@@ -132,6 +145,15 @@ const HouseholdCard: React.FC<{ household: Household }> = ({ household }) => {
         setEditingMember(undefined);
     };
 
+    const getStatusStyle = (status: MemberStatus) => {
+        switch(status) {
+            case 'Expired': return 'text-rose-400 line-through decoration-rose-500 decoration-2 opacity-70';
+            case 'Shifted': return 'text-amber-400 italic opacity-80';
+            case 'Duplicate': return 'text-cyan-400 opacity-80';
+            default: return 'text-white';
+        }
+    };
+
     return (
         <div className="bg-slate-800 rounded-xl shadow-md mb-3">
             <div className="p-4 flex justify-between items-center cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
@@ -142,7 +164,7 @@ const HouseholdCard: React.FC<{ household: Household }> = ({ household }) => {
                  <div className="flex items-center space-x-4">
                     <div className="bg-slate-700 text-xs px-3 py-1 rounded-full flex items-center space-x-1.5">
                         <UsersIcon className="w-4 h-4" />
-                        <span>{household.members.length}</span>
+                        <span>{activeMembersCount}</span>
                     </div>
                     <ChevronDownIcon className={`w-6 h-6 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                 </div>
@@ -153,7 +175,13 @@ const HouseholdCard: React.FC<{ household: Household }> = ({ household }) => {
                         {household.members.map(member => (
                             <li key={member.id} className="flex justify-between items-center p-2 bg-slate-700/50 rounded">
                                 <div>
-                                    <p className="font-medium">{member.name} {member.isHof && <span className="text-xs bg-primary/20 text-sky-300 px-2 py-1 rounded-full ml-2">HOF</span>}</p>
+                                    <div className="flex items-center gap-2">
+                                        <p className={`font-medium ${getStatusStyle(member.status || 'Active')}`}>
+                                            {member.name} 
+                                        </p>
+                                        {member.isHof && <span className="text-xs bg-primary/20 text-sky-300 px-2 py-0.5 rounded-full">HOF</span>}
+                                        {member.status && member.status !== 'Active' && <span className="text-xs bg-black/30 text-slate-400 px-2 py-0.5 rounded border border-slate-600">{member.status}</span>}
+                                    </div>
                                     <p className="text-sm text-slate-400">{member.gender}, DOB: {member.dob}</p>
                                 </div>
                                 <div className="flex space-x-2">
@@ -183,9 +211,9 @@ const HouseholdCard: React.FC<{ household: Household }> = ({ household }) => {
 const AddHouseholdForm: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     const [step, setStep] = useState(1);
     const [householdDetails, setHouseholdDetails] = useState({ houseNo: '', address: '' });
-    const [hofDetails, setHofDetails] = useState<Omit<Member, 'id' | 'isHof'>>({ name: '', dob: '', gender: 'Male', aadhar: '', phone: '' });
-    const [familyMembers, setFamilyMembers] = useState<Omit<Member, 'id' | 'isHof'>[]>([]);
-    const [currentMember, setCurrentMember] = useState<Omit<Member, 'id' | 'isHof'>>({ name: '', dob: '', gender: 'Male' });
+    const [hofDetails, setHofDetails] = useState<Omit<Member, 'id' | 'isHof' | 'status'>>({ name: '', dob: '', gender: 'Male', aadhar: '', phone: '' });
+    const [familyMembers, setFamilyMembers] = useState<Omit<Member, 'id' | 'isHof' | 'status'>[]>([]);
+    const [currentMember, setCurrentMember] = useState<Omit<Member, 'id' | 'isHof' | 'status'>>({ name: '', dob: '', gender: 'Male' });
     
     const { addHousehold, households } = useHouseholds();
     const { addToast } = useToast();
@@ -232,8 +260,8 @@ const AddHouseholdForm: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             houseNo: householdDetails.houseNo,
             address: householdDetails.address,
             members: [
-                { ...hofDetails, id: `m_${Date.now()}_hof`, isHof: true },
-                ...familyMembers.map((m, i) => ({ ...m, id: `m_${Date.now()}_${i}`, isHof: false }))
+                { ...hofDetails, id: `m_${Date.now()}_hof`, isHof: true, status: 'Active' },
+                ...familyMembers.map((m, i) => ({ ...m, id: `m_${Date.now()}_${i}`, isHof: false, status: 'Active' as MemberStatus }))
             ]
         };
         addHousehold(newHousehold);
@@ -304,7 +332,7 @@ const Households: React.FC = () => {
         const lowercasedFilter = searchTerm.toLowerCase();
         return sorted.filter(h =>
             (h.houseNo || '').toLowerCase().includes(lowercasedFilter) ||
-            h.members.some(m => (m.name || '').toLowerCase().includes(lowercasedFilter) && m.isHof)
+            h.members.some(m => (m.name || '').toLowerCase().includes(lowercasedFilter))
         );
     }, [households, searchTerm]);
 
@@ -327,7 +355,7 @@ const Households: React.FC = () => {
             <div className="relative mb-4">
                 <input
                     type="text"
-                    placeholder="Search by H.No or Head of Family..."
+                    placeholder="Search by H.No or Member Name..."
                     value={searchTerm}
                     onChange={e => setSearchTerm(e.target.value)}
                     className="w-full p-3 pl-10 border border-slate-700 rounded-lg bg-slate-700 placeholder-slate-400 text-white"

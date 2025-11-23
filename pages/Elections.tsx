@@ -2,7 +2,7 @@
 import React, { useState, useMemo } from 'react';
 import { useElections, useHouseholds, useToast } from '../contexts/AppContexts';
 import type { Voter, Member, VoterStatus } from '../types';
-import { SearchIcon, LinkIcon, MoreVerticalIcon, ChevronDownIcon, VoterListIcon, HomeIcon, UsersIcon, AtSymbolIcon, XIcon, AlertTriangleIcon, ArrowRightCircleIcon, CopyIcon, CheckIcon } from '../components/Icons';
+import { SearchIcon, LinkIcon, MoreVerticalIcon, ChevronDownIcon, VoterListIcon, HomeIcon, UsersIcon, AtSymbolIcon, XIcon, AlertTriangleIcon, ArrowRightCircleIcon, CopyIcon, CheckIcon, SparklesIcon } from '../components/Icons';
 
 // --- VoterLinker Modal ---
 interface VoterLinkerProps {
@@ -104,7 +104,7 @@ const VoterCard: React.FC<{ voter: Voter }> = ({ voter }) => {
         if (!voter.linkedMemberId) return null;
         for (const house of households) {
             const member = house.members.find(m => m.id === voter.linkedMemberId);
-            if (member) return { houseNo: house.houseNo, memberName: member.name };
+            if (member) return { houseNo: house.houseNo, memberName: member.name, status: member.status };
         }
         return null;
     }, [voter, households]);
@@ -179,7 +179,10 @@ const VoterCard: React.FC<{ voter: Voter }> = ({ voter }) => {
                     {(voter.partNo && voter.partSerialNo) ? ' / ' : ''}
                     {voter.partSerialNo ? `S.No: ${voter.partSerialNo}`: ''}
                 </p>
-                 {linkedMemberInfo && <p className="text-xs text-green-400 font-semibold">Linked: {linkedMemberInfo.memberName}</p>}
+                 {linkedMemberInfo && <p className="text-xs text-green-400 font-semibold flex items-center gap-1">
+                     <LinkIcon className="w-3 h-3"/>
+                     <span>{linkedMemberInfo.memberName}</span>
+                 </p>}
             </div>
             <VoterLinker voter={voter} isOpen={isLinkerOpen} onClose={() => setLinkerOpen(false)} />
         </div>
@@ -189,7 +192,7 @@ const VoterCard: React.FC<{ voter: Voter }> = ({ voter }) => {
 // --- Main Elections View ---
 const Elections: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const { voters } = useElections();
+    const { voters, autoLinkVoters } = useElections();
     const [activeFilter, setActiveFilter] = useState<VoterStatus | 'All'>('All');
     const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
 
@@ -246,13 +249,25 @@ const Elections: React.FC = () => {
 
     return (
         <div className="p-4">
-            <div className="bg-slate-800 p-4 rounded-xl mb-6 flex items-center space-x-4">
-                <div className="bg-primary/20 text-primary p-3 rounded-lg">
-                    <VoterListIcon className="w-8 h-8"/>
-                </div>
-                <div>
-                    <h2 className="text-xl font-bold text-white">Voter List Management</h2>
-                    <p className="text-slate-400 text-sm">Browse voters by section and household.</p>
+            <div className="bg-slate-800 p-4 rounded-xl mb-6">
+                <div className="flex justify-between items-start">
+                    <div className="flex items-center space-x-4">
+                        <div className="bg-primary/20 text-primary p-3 rounded-lg">
+                            <VoterListIcon className="w-8 h-8"/>
+                        </div>
+                        <div>
+                            <h2 className="text-xl font-bold text-white">Voter List</h2>
+                            <p className="text-slate-400 text-sm">Manage & verify electors.</p>
+                        </div>
+                    </div>
+                    <button 
+                        onClick={autoLinkVoters} 
+                        className="bg-purple-600/20 text-purple-300 p-2 rounded-lg flex flex-col items-center justify-center text-xs hover:bg-purple-600/30 transition-colors"
+                        title="Automatically link voters to census data"
+                    >
+                        <SparklesIcon className="w-5 h-5 mb-1" />
+                        <span>Auto Link</span>
+                    </button>
                 </div>
             </div>
 

@@ -64,6 +64,7 @@ const parseCensusExcel = (data: ArrayBuffer): Household[] => {
             isHof: ['yes', 'true'].includes(row['Is HOF']?.toString().toLowerCase()),
             aadhar: row['Aadhar']?.toString() || undefined,
             phone: row['Phone']?.toString() || undefined,
+            status: 'Active',
         };
 
         let household = householdsMap.get(houseNo);

@@ -7,6 +7,7 @@ export interface Member {
   isHof: boolean;
   aadhar?: string;
   phone?: string;
+  status: MemberStatus;
 }
 
 export interface Household {
@@ -17,6 +18,7 @@ export interface Household {
 }
 
 export type VoterStatus = 'Active' | 'Expired' | 'Shifted' | 'Duplicate';
+export type MemberStatus = 'Active' | 'Expired' | 'Shifted' | 'Duplicate';
 
 export interface Voter {
   id:string;
@@ -43,7 +45,6 @@ export interface Settings {
     bloDesignation: string;
     bloAddress: string;
     bloMobile: string;
-    // FIX: Add missing properties to Settings type
     assemblyConstituency: string;
     part: string;
     syncId: string;
