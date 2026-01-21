@@ -117,10 +117,10 @@ const Dashboard: React.FC = () => {
     }, [households, voters]);
 
     const renderTabs = () => (
-      <div className="bg-slate-800 p-1 rounded-full flex mb-6">
+      <div className="bg-slate-800 p-1 rounded-full flex mb-6 shadow-lg border border-slate-700">
         <button
           onClick={() => setActiveTab('census')}
-          className={`w-1/2 py-2 rounded-full font-semibold transition-colors text-sm ${activeTab === 'census' ? 'bg-primary text-white' : 'text-slate-300 hover:bg-slate-700'}`}
+          className={`w-1/2 py-2 rounded-full font-bold transition-all text-xs uppercase tracking-wider ${activeTab === 'census' ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-slate-400 hover:bg-slate-700'}`}
         >
           <div className="flex items-center justify-center space-x-2">
             <UsersIcon className="w-4 h-4" />
@@ -129,7 +129,7 @@ const Dashboard: React.FC = () => {
         </button>
         <button
           onClick={() => setActiveTab('election')}
-          className={`w-1/2 py-2 rounded-full font-semibold transition-colors text-sm ${activeTab === 'election' ? 'bg-primary text-white' : 'text-slate-300 hover:bg-slate-700'}`}
+          className={`w-1/2 py-2 rounded-full font-bold transition-all text-xs uppercase tracking-wider ${activeTab === 'election' ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-slate-400 hover:bg-slate-700'}`}
         >
           <div className="flex items-center justify-center space-x-2">
             <VoterListIcon className="w-4 h-4" />
@@ -143,6 +143,16 @@ const Dashboard: React.FC = () => {
         <div className="p-4 space-y-4">
             {isModalOpen && <Turning18Modal members={stats.prospectiveVoters} onClose={() => setIsModalOpen(false)} />}
             
+            <div className="flex items-center justify-between mb-2">
+                <h2 className="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
+                    <HomeIcon className="w-5 h-5 text-primary" />
+                    Dashboard
+                </h2>
+                <div className="text-[10px] bg-slate-800 text-slate-400 px-2 py-1 rounded-md border border-slate-700 font-mono">
+                    LIVE DATA
+                </div>
+            </div>
+
             {renderTabs()}
 
             {activeTab === 'census' && (
@@ -177,8 +187,8 @@ const Dashboard: React.FC = () => {
                         <StatCard title="EP Ratio" value={stats.epRatio} icon={<TrendingUpIcon />} color="text-warning" />
                         <StatCard title="Gender Ratio" value={stats.genderRatio} icon={<PieChartIcon />} color="text-info" />
                     </div>
-                    <div className="bg-slate-800 rounded-xl shadow-lg p-4">
-                         <DoughnutChart title="Voter Status" data={stats.voterChartData} />
+                    <div className="bg-slate-800 rounded-xl shadow-lg p-4 border border-slate-700">
+                         <DoughnutChart title="Voter Status Breakdown" data={stats.voterChartData} />
                     </div>
                 </div>
             )}
