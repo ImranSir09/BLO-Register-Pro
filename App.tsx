@@ -26,29 +26,26 @@ const App: React.FC = () => {
     }
   };
   
-  // Removed pb-24 as nav is now static. Added relative for absolute positioning of children (like FABs).
-  const mainClasses = `flex-grow overflow-y-auto relative hide-scrollbar`;
+  const mainClasses = `flex-grow overflow-y-auto relative hide-scrollbar transition-colors duration-200`;
 
   return (
     <AppProviders>
-      <div className="min-h-screen bg-slate-950 flex justify-center md:items-center md:p-8">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex justify-center md:items-center md:p-8 transition-colors duration-200">
         {/* Device simulation container */}
-        <div className="flex flex-col h-screen w-full md:h-[850px] md:w-[400px] md:rounded-[2.5rem] md:border-[12px] md:border-slate-900 bg-slate-900 font-sans shadow-2xl overflow-hidden relative ring-1 ring-white/5">
+        <div className="flex flex-col h-screen w-full md:h-[850px] md:w-[400px] md:rounded-[2.5rem] md:border-[12px] border-slate-200 dark:border-slate-900 bg-white dark:bg-slate-900 font-sans shadow-2xl overflow-hidden relative ring-1 ring-slate-950/5 dark:ring-white/5 transition-all duration-200">
           {/* Mobile Notch simulation (Desktop only) */}
-          <div className="hidden md:block absolute top-0 left-1/2 -translate-x-1/2 w-32 h-7 bg-slate-900 rounded-b-3xl z-50 border-b border-r border-l border-white/5"></div>
+          <div className="hidden md:block absolute top-0 left-1/2 -translate-x-1/2 w-32 h-7 bg-slate-200 dark:bg-slate-900 rounded-b-3xl z-50 border-b border-r border-l border-slate-950/5 dark:border-white/5"></div>
           
           <Header />
           <main className={mainClasses}>
             {renderPage()}
           </main>
           
-          {/* Floating Assistant Button logic can go here if needed, or inside pages */}
-
           <BottomNav activePage={activePage} setActivePage={setActivePage} />
           <ToastContainer />
           
           {/* iOS Home Indicator simulation (Desktop only) */}
-           <div className="hidden md:block absolute bottom-1 left-1/2 -translate-x-1/2 w-32 h-1 bg-slate-700 rounded-full z-50"></div>
+           <div className="hidden md:block absolute bottom-1 left-1/2 -translate-x-1/2 w-32 h-1 bg-slate-300 dark:bg-slate-700 rounded-full z-50"></div>
         </div>
       </div>
       

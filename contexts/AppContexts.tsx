@@ -172,7 +172,6 @@ export const ElectionProvider: React.FC<{ children: ReactNode }> = ({ children }
                 
                 if (member.status !== newMemberStatus) {
                     updateMember(household.id, { ...member, status: newMemberStatus });
-                    // addToast(`Census updated: Member marked as ${status}`, 'info');
                 }
             }
         }
@@ -245,7 +244,17 @@ export const SettingsProvider: React.FC<{children: ReactNode}> = ({children}) =>
         part: '',
         syncId: '',
         syncKey: '',
+        theme: 'dark',
     });
+
+    useEffect(() => {
+        const root = window.document.documentElement;
+        if (settings.theme === 'dark') {
+            root.classList.add('dark');
+        } else {
+            root.classList.remove('dark');
+        }
+    }, [settings.theme]);
 
     const saveSettings = (newSettings: Settings) => {
         setSettings(newSettings);

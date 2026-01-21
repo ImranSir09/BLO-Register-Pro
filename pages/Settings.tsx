@@ -7,11 +7,8 @@ import { UserCircleIcon, MapPinIcon, EditIcon, SaveIcon, DownloadIcon, UploadIco
 
 const transformBackupHouseholds = (backupHouseholds: any[]): Household[] => {
     return backupHouseholds.map(h => {
-        // Handle a legacy format where HOF was a separate object
         if (h.headOfFamily && typeof h.headOfFamily === 'object') {
             const newHof: Member = { ...h.headOfFamily, isHof: true };
-            
-            // Ensure members is an array and filter out any potential duplicate HOF to prevent data corruption
             const otherMembers: Member[] = Array.isArray(h.members)
                 ? h.members
                     .filter((m: any) => m.id !== newHof.id) 
@@ -25,7 +22,6 @@ const transformBackupHouseholds = (backupHouseholds: any[]): Household[] => {
                 members: [newHof, ...otherMembers]
             };
         }
-        // This handles the current format
         return h as Household; 
     });
 };
@@ -42,14 +38,14 @@ const ProfileEditModal: React.FC<{
 
     if (!isOpen) return null;
     
-    const inputClasses = "w-full p-2 border border-slate-600 rounded bg-slate-700 text-white placeholder-slate-400";
+    const inputClasses = "w-full p-2 border border-slate-300 dark:border-slate-600 rounded bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400";
     
     return (
-         <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-30 p-4">
-            <div className="bg-slate-800 border border-slate-700 rounded-lg p-6 w-11/12 max-w-md">
+         <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50 p-4">
+            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-6 w-11/12 max-w-md shadow-2xl">
                 <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xl font-bold text-white">Edit Officer Profile</h3>
-                    <button onClick={onClose} className="text-slate-400 hover:text-white"><XIcon/></button>
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white">Edit Officer Profile</h3>
+                    <button onClick={onClose} className="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors"><XIcon/></button>
                 </div>
                 <div className="space-y-4">
                      <input type="text" placeholder="BLO Name" value={localSettings.bloName} onChange={e => setLocalSettings(s => ({...s, bloName: e.target.value}))} className={inputClasses} />
@@ -59,7 +55,7 @@ const ProfileEditModal: React.FC<{
                      <input type="text" placeholder="Part No. & Name" value={localSettings.part} onChange={e => setLocalSettings(s => ({...s, part: e.target.value}))} className={inputClasses} />
                 </div>
                 <div className="flex justify-end mt-6">
-                    <button onClick={() => { onSave(localSettings); onClose(); }} className="w-full py-2 px-4 bg-primary text-white rounded-lg hover:bg-sky-600 flex items-center justify-center space-x-2">
+                    <button onClick={() => { onSave(localSettings); onClose(); }} className="w-full py-2.5 px-4 bg-primary text-white rounded-lg hover:bg-sky-600 flex items-center justify-center space-x-2 font-bold shadow-lg shadow-primary/20 transition-all active:scale-95">
                         <SaveIcon className="w-5 h-5"/>
                         <span>Save Profile</span>
                     </button>
@@ -82,6 +78,10 @@ const Settings: React.FC = () => {
     const handleSaveSettings = (newSettings: SettingsType) => {
         saveSettings(newSettings);
         addToast("Profile information saved!", "success");
+    };
+
+    const handleThemeToggle = (newTheme: 'light' | 'dark') => {
+        saveSettings({ ...settings, theme: newTheme });
     };
 
     const handleBackup = () => {
@@ -140,37 +140,26 @@ const Settings: React.FC = () => {
                 }
 
                 if (restoredCount.households > 0 || restoredCount.voters > 0 || restoredCount.settings) {
-                    addToast(`Restore successful: ${restoredCount.households} households, ${restoredCount.voters} voters, and settings loaded.`, "success");
+                    addToast(`Restore successful!`, "success");
                 } else {
                     addToast("Backup file did not contain any data to restore.", "info");
                 }
 
             } catch (error) {
-                if (error instanceof SyntaxError) {
-                    addToast("Restore failed. The file is not a valid JSON backup file.", "error");
-                } else {
-                    addToast("An unexpected error occurred during restore.", "error");
-                }
+                addToast("Restore failed. Invalid format.", "error");
                 console.error("Restore Error:", error);
             } finally {
                 cleanup();
             }
         };
 
-        reader.onerror = () => {
-            addToast("Error reading file. Please ensure it is a valid backup file.", "error");
-            console.error("FileReader Error:", reader.error);
-            cleanup();
-        };
-        
         reader.readAsText(file);
     };
 
     const handleClearData = () => {
-        if (window.confirm("ARE YOU SURE? This will delete all households, voters, and reset your profile settings on this device. This action cannot be undone.")) {
+        if (window.confirm("ARE YOU SURE? This will delete everything.")) {
             setHouseholds([]);
             setVoters([]);
-            // Reset settings to their default state
             saveSettings({
                 bloName: 'BLO Name',
                 bloDesignation: '',
@@ -180,86 +169,96 @@ const Settings: React.FC = () => {
                 part: '',
                 syncId: '',
                 syncKey: '',
+                theme: 'dark',
             });
-            addToast("All local data has been cleared.", "success");
+            addToast("All data cleared.", "success");
         }
     };
     
     const ProfileField: React.FC<{label: string, value?: string, icon: React.ReactNode}> = ({label, value, icon}) => (
         <div className="flex items-start space-x-3">
-             <div className="bg-slate-700 p-2 rounded-lg text-primary shrink-0 mt-1">
+             <div className="bg-slate-100 dark:bg-slate-700 p-2 rounded-lg text-primary shrink-0 mt-1 transition-colors">
                 {icon}
              </div>
             <div>
-                <p className="text-sm text-slate-400">{label}</p>
-                <p className="text-white font-medium">{value || 'Not Set'}</p>
+                <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider leading-none mb-1">{label}</p>
+                <p className="text-slate-800 dark:text-white font-semibold transition-colors">{value || 'Not Set'}</p>
             </div>
         </div>
     );
 
     return (
-        <div className="p-4 space-y-6">
+        <div className="p-4 space-y-4">
             <ProfileEditModal isOpen={isEditingProfile} onClose={() => setIsEditingProfile(false)} settings={settings} onSave={handleSaveSettings} />
-             <div className="bg-slate-800 rounded-xl p-4">
-                <h2 className="text-2xl font-bold text-white">App Settings</h2>
-                <p className="text-slate-400 mt-1">Configure your profile, manage app data, and change the theme.</p>
+             
+            <div className="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 transition-all">
+                <h2 className="text-2xl font-black text-slate-900 dark:text-white">App Settings</h2>
+                <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Personalize your experience and manage data.</p>
             </div>
 
-             <div className="bg-slate-800 rounded-xl p-4 space-y-4">
-                <h3 className="text-lg font-semibold text-white">Appearance</h3>
+             <div className="bg-white dark:bg-slate-800 rounded-xl p-4 space-y-4 shadow-sm border border-slate-200 dark:border-slate-800 transition-all">
                 <div className="flex justify-between items-center">
-                    <p className="text-slate-200">Theme</p>
-                     <div className="bg-slate-700 p-1 rounded-full flex items-center">
-                        <div className="p-1.5 rounded-full bg-slate-600 text-yellow-400 mr-1">
-                            <SunIcon className="w-4 h-4"/>
-                        </div>
-                         <div className="p-1.5 rounded-full text-slate-400">
-                            <MoonIcon className="w-4 h-4"/>
-                        </div>
+                    <div>
+                        <h3 className="text-base font-bold text-slate-900 dark:text-white leading-tight">Theme Appearance</h3>
+                        <p className="text-[11px] text-slate-500 font-medium">Switch between light and dark mode</p>
+                    </div>
+                     <div className="bg-slate-100 dark:bg-slate-700 p-1 rounded-full flex items-center transition-colors">
+                        <button 
+                            onClick={() => handleThemeToggle('light')}
+                            className={`p-2 rounded-full transition-all duration-300 ${settings.theme === 'light' ? 'bg-white text-yellow-500 shadow-md' : 'text-slate-400 hover:text-slate-600'}`}
+                        >
+                            <SunIcon className="w-5 h-5"/>
+                        </button>
+                         <button 
+                            onClick={() => handleThemeToggle('dark')}
+                            className={`p-2 rounded-full transition-all duration-300 ${settings.theme === 'dark' ? 'bg-slate-900 text-primary shadow-md' : 'text-slate-400 dark:text-slate-500 hover:text-slate-300'}`}
+                        >
+                            <MoonIcon className="w-5 h-5"/>
+                        </button>
                      </div>
                 </div>
             </div>
 
-            <div className="bg-slate-800 rounded-xl p-4 space-y-4">
-                <div className="flex justify-between items-center border-b border-slate-700 pb-3">
-                    <h3 className="text-lg font-semibold text-white">Officer Profile for Reports</h3>
-                    <button onClick={() => setIsEditingProfile(true)} className="flex items-center space-x-2 text-sm bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded-md text-white transition-colors">
-                        <EditIcon className="w-4 h-4" />
+            <div className="bg-white dark:bg-slate-800 rounded-xl p-4 space-y-4 shadow-sm border border-slate-200 dark:border-slate-800 transition-all">
+                <div className="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+                    <h3 className="text-base font-bold text-slate-900 dark:text-white">Officer Profile</h3>
+                    <button onClick={() => setIsEditingProfile(true)} className="flex items-center space-x-2 text-[11px] font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 px-3 py-1.5 rounded-md text-slate-600 dark:text-white transition-all">
+                        <EditIcon className="w-3.5 h-3.5" />
                         <span>Edit</span>
                     </button>
                 </div>
                 <div className="space-y-4">
-                    <ProfileField label="Assembly Constituency & Part" value={`${settings.assemblyConstituency} | ${settings.part}`} icon={<MapPinIcon className="w-5 h-5"/>} />
+                    <ProfileField label="Area Detail" value={`${settings.assemblyConstituency} | ${settings.part}`} icon={<MapPinIcon className="w-5 h-5"/>} />
                     <ProfileField label="BLO Name" value={settings.bloName} icon={<UserCircleIcon className="w-5 h-5"/>} />
                     <ProfileField label="Designation" value={settings.bloDesignation} icon={<BriefcaseIcon className="w-5 h-5"/>} />
-                    <ProfileField label="Mobile" value={settings.bloMobile} icon={<PhoneIcon className="w-5 h-5"/>} />
+                    <ProfileField label="Contact Mobile" value={settings.bloMobile} icon={<PhoneIcon className="w-5 h-5"/>} />
                 </div>
             </div>
 
-            <div className="bg-slate-800 rounded-xl p-4 space-y-4">
-                <h3 className="text-lg font-semibold text-white border-b border-slate-700 pb-3">Local Data Management</h3>
-                <input type="file" accept=".json,application/json" ref={restoreFileRef} className="hidden" onChange={handleRestore}/>
+            <div className="bg-white dark:bg-slate-800 rounded-xl p-4 space-y-4 shadow-sm border border-slate-200 dark:border-slate-800 transition-all">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">Data Management</h3>
+                <input type="file" accept=".json" ref={restoreFileRef} className="hidden" onChange={handleRestore}/>
                 <div className="grid grid-cols-2 gap-3">
-                    <button onClick={handleBackup} className="flex items-center justify-center space-x-2 py-3 px-4 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition-colors">
-                        <DownloadIcon />
-                        <span>Backup Data</span>
+                    <button onClick={handleBackup} className="flex flex-col items-center justify-center space-y-1 py-3 px-4 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-white rounded-xl hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
+                        <DownloadIcon className="w-5 h-5" />
+                        <span className="text-[10px] font-bold uppercase tracking-tighter">Backup</span>
                     </button>
-                    <button onClick={() => restoreFileRef.current?.click()} className="flex items-center justify-center space-x-2 py-3 px-4 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition-colors">
-                        <UploadIcon />
-                        <span>Restore Data</span>
+                    <button onClick={() => restoreFileRef.current?.click()} className="flex flex-col items-center justify-center space-y-1 py-3 px-4 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-white rounded-xl hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
+                        <UploadIcon className="w-5 h-5" />
+                        <span className="text-[10px] font-bold uppercase tracking-tighter">Restore</span>
                     </button>
                 </div>
             </div>
 
-             <div className="bg-rose-900/50 rounded-xl border border-rose-500/50 p-4">
-                 <div className="flex items-center space-x-2 mb-2 border-b border-rose-300/50 pb-2">
-                     <TrashIcon className="w-5 h-5 text-rose-400"/>
-                     <h3 className="text-lg font-semibold text-rose-200">Danger Zone</h3>
+             <div className="bg-rose-50 dark:bg-rose-900/20 rounded-xl border border-rose-200 dark:border-rose-500/50 p-4 transition-colors">
+                 <div className="flex items-center space-x-2 mb-2 border-b border-rose-200 dark:border-rose-300/20 pb-2">
+                     <TrashIcon className="w-5 h-5 text-rose-500"/>
+                     <h3 className="text-base font-bold text-rose-600 dark:text-rose-200">Danger Zone</h3>
                  </div>
-                 <p className="text-sm text-rose-300 my-3">This action is irreversible and will permanently delete all data stored on this device.</p>
-                 <button onClick={handleClearData} className="w-full flex items-center justify-center space-x-2 py-2 px-4 bg-danger text-white rounded-lg hover:bg-rose-600 transition-colors">
-                    <TrashIcon />
-                    <span>Clear All Local Data</span>
+                 <p className="text-[11px] text-rose-600 dark:text-rose-300/80 my-2 font-medium">Irreversible action. Deletes all local records.</p>
+                 <button onClick={handleClearData} className="w-full flex items-center justify-center space-x-2 py-2 px-4 bg-rose-500 text-white rounded-lg hover:bg-rose-600 transition-all font-bold shadow-lg shadow-rose-500/20 text-sm">
+                    <TrashIcon className="w-4 h-4" />
+                    <span>Clear Local Data</span>
                 </button>
              </div>
         </div>

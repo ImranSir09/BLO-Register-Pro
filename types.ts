@@ -49,4 +49,5 @@ export interface Settings {
     part: string;
     syncId: string;
     syncKey: string;
+    theme: 'light' | 'dark';
 }

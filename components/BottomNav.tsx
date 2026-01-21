@@ -15,7 +15,7 @@ const NavItem: React.FC<{
     onClick: () => void;
 }> = ({ label, icon, isActive, onClick }) => {
     const activeClasses = 'text-primary scale-105';
-    const inactiveClasses = 'text-slate-500 hover:text-slate-400';
+    const inactiveClasses = 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400';
 
     return (
         <button
@@ -25,7 +25,7 @@ const NavItem: React.FC<{
             <div className={`${isActive ? 'bg-primary/10 p-1 rounded-xl' : ''} transition-all duration-300`}>
                 {icon}
             </div>
-            <span className={`text-[10px] font-medium mt-1 ${isActive ? 'text-primary' : 'text-slate-500'}`}>{label}</span>
+            <span className={`text-[10px] font-bold mt-1 tracking-tight ${isActive ? 'text-primary' : ''}`}>{label}</span>
         </button>
     );
 };
@@ -39,7 +39,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ activePage, setActivePage }) => {
         { page: 'Settings', label: 'Settings', icon: <SettingsIcon /> },
     ];
     return (
-        <nav className="w-full bg-slate-900 border-t border-slate-800 flex justify-around z-30 py-2 shadow-[0_-5px_20px_rgba(0,0,0,0.2)] flex-shrink-0">
+        <nav className="w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex justify-around z-30 py-2 shadow-[0_-5px_20px_rgba(0,0,0,0.05)] dark:shadow-[0_-5px_20px_rgba(0,0,0,0.2)] flex-shrink-0 transition-colors duration-200">
             {navItems.map(item => (
                 <NavItem
                     key={item.page}
