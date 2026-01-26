@@ -79,35 +79,35 @@ const VoterModal: React.FC<VoterModalProps> = ({ isOpen, onClose, onSave, existi
         onClose();
     };
 
-    const inputClasses = "w-full p-2 border border-slate-600 rounded bg-slate-700 text-white placeholder-slate-400 text-sm";
+    const inputClasses = "w-full p-2 border border-slate-300 dark:border-slate-600 rounded bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 text-sm transition-colors";
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-40 p-4">
-            <div className="bg-slate-800 border border-slate-700 rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl transition-colors">
                 <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xl font-bold text-white">{existingVoter ? 'Edit' : 'Add'} Voter</h3>
-                    <button onClick={onClose} className="text-slate-400 hover:text-white"><XIcon /></button>
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white">{existingVoter ? 'Edit' : 'Add'} Voter</h3>
+                    <button onClick={onClose} className="text-slate-400 hover:text-slate-600 dark:hover:text-white"><XIcon /></button>
                 </div>
                 
                 <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-3">
                         <div className="col-span-2">
-                            <label className="text-[10px] text-slate-400 uppercase font-bold mb-1 block">Full Name *</label>
+                            <label className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold mb-1 block">Full Name *</label>
                             <input type="text" placeholder="Voter Name" value={name} onChange={e => setName(e.target.value)} className={inputClasses} />
                         </div>
                         <div>
-                            <label className="text-[10px] text-slate-400 uppercase font-bold mb-1 block">EPIC Number *</label>
+                            <label className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold mb-1 block">EPIC Number *</label>
                             <input type="text" placeholder="EPIC NO" value={epicNo} onChange={e => setEpicNo(e.target.value)} className={`${inputClasses} font-mono`} />
                         </div>
                         <div>
-                            <label className="text-[10px] text-slate-400 uppercase font-bold mb-1 block">House No *</label>
+                            <label className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold mb-1 block">House No *</label>
                             <input type="text" placeholder="H.No" value={houseNo} onChange={e => setHouseNo(e.target.value)} className={inputClasses} />
                         </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
                         <div>
-                            <label className="text-[10px] text-slate-400 uppercase font-bold mb-1 block">Gender</label>
+                            <label className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold mb-1 block">Gender</label>
                             <select value={gender} onChange={e => setGender(e.target.value as any)} className={inputClasses}>
                                 <option>Male</option>
                                 <option>Female</option>
@@ -115,14 +115,14 @@ const VoterModal: React.FC<VoterModalProps> = ({ isOpen, onClose, onSave, existi
                             </select>
                         </div>
                         <div>
-                            <label className="text-[10px] text-slate-400 uppercase font-bold mb-1 block">Age *</label>
+                            <label className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold mb-1 block">Age *</label>
                             <input type="number" placeholder="Age" value={age} onChange={e => setAge(e.target.value)} className={inputClasses} />
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 border-t border-slate-700 pt-3">
+                    <div className="grid grid-cols-2 gap-3 border-t border-slate-100 dark:border-slate-700 pt-3">
                         <div>
-                            <label className="text-[10px] text-slate-400 uppercase font-bold mb-1 block">Relation Type</label>
+                            <label className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold mb-1 block">Relation Type</label>
                             <select value={relationType} onChange={e => setRelationType(e.target.value)} className={inputClasses}>
                                 <option>Father</option>
                                 <option>Mother</option>
@@ -131,24 +131,24 @@ const VoterModal: React.FC<VoterModalProps> = ({ isOpen, onClose, onSave, existi
                             </select>
                         </div>
                         <div>
-                            <label className="text-[10px] text-slate-400 uppercase font-bold mb-1 block">Relation Name</label>
+                            <label className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold mb-1 block">Relation Name</label>
                             <input type="text" placeholder="Name" value={relationName} onChange={e => setRelationName(e.target.value)} className={inputClasses} />
                         </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
                         <div>
-                            <label className="text-[10px] text-slate-400 uppercase font-bold mb-1 block">Section No</label>
+                            <label className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold mb-1 block">Section No</label>
                             <input type="number" placeholder="Section" value={sectionNo} onChange={e => setSectionNo(e.target.value)} className={inputClasses} />
                         </div>
                         <div>
-                            <label className="text-[10px] text-slate-400 uppercase font-bold mb-1 block">Part Sl No</label>
+                            <label className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold mb-1 block">Part Sl No</label>
                             <input type="number" placeholder="Serial No" value={partSerialNo} onChange={e => setPartSerialNo(e.target.value)} className={inputClasses} />
                         </div>
                     </div>
 
                     <div>
-                        <label className="text-[10px] text-slate-400 uppercase font-bold mb-1 block">Voter Status</label>
+                        <label className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold mb-1 block">Voter Status</label>
                         <select value={status} onChange={e => setStatus(e.target.value as VoterStatus)} className={`${inputClasses} ${status === 'Active' ? 'text-success' : 'text-danger'}`}>
                             <option value="Active">Active</option>
                             <option value="Expired">Expired</option>
@@ -159,8 +159,8 @@ const VoterModal: React.FC<VoterModalProps> = ({ isOpen, onClose, onSave, existi
                 </div>
 
                 <div className="flex justify-end space-x-2 mt-6">
-                    <button onClick={onClose} className="px-4 py-2 bg-slate-700 rounded hover:bg-slate-600 text-white text-sm">Cancel</button>
-                    <button onClick={handleSubmit} className="px-6 py-2 bg-primary text-white rounded hover:bg-sky-600 flex items-center space-x-2 text-sm font-bold">
+                    <button onClick={onClose} className="px-4 py-2 bg-slate-100 dark:bg-slate-700 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-white text-sm font-bold transition-all">Cancel</button>
+                    <button onClick={handleSubmit} className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-sky-600 flex items-center space-x-2 text-sm font-bold shadow-lg shadow-primary/20 transition-all active:scale-95">
                         <SaveIcon className="w-4 h-4"/>
                         <span>{existingVoter ? 'Update' : 'Save'} Voter</span>
                     </button>
@@ -182,33 +182,62 @@ const VoterLinker: React.FC<VoterLinkerProps> = ({ voter, isOpen, onClose }) => 
     const { linkVoterToMember, updateVoter } = useElections();
     const { addToast } = useToast();
 
+    const normalize = (val: string) => (val || '').toLowerCase().replace(/(sh\.|smt\.|mr\.|mrs\.|miss|ms\.)/g, '').replace(/\s+/g, '').trim();
+
     const suggestions = useMemo(() => {
         if (!isOpen) return [];
-        const allMembers = households.flatMap(h => h.members.map(m => ({ ...m, houseNo: h.houseNo })));
-        const voterNameLower = (voter.name || '').toLowerCase();
-        const voterHouseNoLower = (voter.houseNo || '').toLowerCase();
+        
+        const allMembers = households.flatMap(h => h.members.map(m => {
+            const hof = h.members.find(fam => fam.isHof);
+            return { ...m, houseNo: h.houseNo, hofName: hof?.name || '' };
+        }));
+
+        const vNameNorm = normalize(voter.name);
+        const vHouseNorm = normalize(voter.houseNo);
+        const vRelationNorm = normalize(voter.relationName || '');
+
         return allMembers
             .map(member => {
                 let score = 0;
-                const memberHouseNoLower = (member.houseNo || '').toLowerCase();
-                const memberNameLower = (member.name || '').toLowerCase();
-                if (memberHouseNoLower === voterHouseNoLower) score += 5;
-                if (memberNameLower.includes(voterNameLower) || voterNameLower.includes(memberNameLower)) score += 3;
+                const mNameNorm = normalize(member.name);
+                const mHouseNorm = normalize(member.houseNo);
+                const mHofNorm = normalize(member.hofName);
+
                 const getAge = (dob: string) => dob ? new Date().getFullYear() - new Date(dob).getFullYear() : -100;
-                if (Math.abs(getAge(member.dob) - voter.age) <= 2) score += 2;
+                const mAge = getAge(member.dob);
+                const ageDiff = Math.abs(mAge - voter.age);
+
+                // HOUSE MATCHING (Priority 1)
+                if (mHouseNorm === vHouseNorm) score += 40;
+                
+                // NAME MATCHING (Priority 2)
+                if (mNameNorm === vNameNorm) score += 30;
+                else if (mNameNorm.includes(vNameNorm) || vNameNorm.includes(mNameNorm)) score += 15;
+
+                // AGE PROXIMITY (Priority 3)
+                if (ageDiff === 0) score += 15;
+                else if (ageDiff <= 2) score += 10;
+                else if (ageDiff <= 5) score += 5;
+
+                // RELATIONSHIP HINT
+                if (vRelationNorm && (mHofNorm.includes(vRelationNorm) || vRelationNorm.includes(mHofNorm))) score += 10;
+
+                // GENDER FILTER (Must match)
+                if (member.gender.toLowerCase() !== voter.gender.toLowerCase()) score = 0;
+
                 return { member, score };
             })
-            .filter(item => item.score > 0)
+            .filter(item => item.score > 20)
             .sort((a, b) => b.score - a.score)
-            .slice(0, 5);
+            .slice(0, 10);
     }, [voter, households, isOpen]);
 
-    const handleLink = (member: Member & { houseNo: string }) => {
+    const handleLink = (member: any) => {
         linkVoterToMember(voter.id, member.id);
-        if (window.confirm("Do you want to update voter details from census data?")) {
+        if (window.confirm("Details Match Found! Do you want to auto-update Voter info from Census records (Name, Gender, Age, House)?")) {
             const getAge = (dob: string) => new Date().getFullYear() - new Date(dob).getFullYear();
             updateVoter({ ...voter, name: member.name, gender: member.gender, age: getAge(member.dob), houseNo: member.houseNo, linkedMemberId: member.id });
-            addToast("Voter linked and details updated.", "success");
+            addToast("Voter successfully linked & updated.", "success");
         } else {
             addToast("Voter linked successfully.", "success");
         }
@@ -218,27 +247,51 @@ const VoterLinker: React.FC<VoterLinkerProps> = ({ voter, isOpen, onClose }) => 
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-40 p-4">
-            <div className="bg-slate-800 border border-slate-700 rounded-lg p-6 w-full max-w-md">
-                <h3 className="text-xl font-bold mb-4 text-white">Link Voter: {voter.name}</h3>
-                <p className="mb-2 text-sm text-slate-300">EPIC: {voter.epicNo}, House: {voter.houseNo}</p>
-                <div className="mt-4 space-y-2 max-h-60 overflow-y-auto">
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50 p-4">
+            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 w-full max-w-md shadow-2xl transition-colors max-h-[90vh] flex flex-col">
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-xl font-black text-slate-900 dark:text-white">Smart Voter Linking</h3>
+                    <button onClick={onClose} className="text-slate-400 hover:text-slate-600 dark:hover:text-white"><XIcon /></button>
+                </div>
+                
+                <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl mb-4 border border-slate-100 dark:border-slate-700">
+                    <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-1">Matching Target</p>
+                    <h4 className="font-bold text-slate-900 dark:text-white text-lg">{voter.name}</h4>
+                    <div className="flex items-center gap-2 mt-1">
+                        <span className="text-[11px] font-bold text-primary px-1.5 py-0.5 bg-primary/10 rounded">EPIC: {voter.epicNo}</span>
+                        <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400">H.No: {voter.houseNo}</span>
+                    </div>
+                </div>
+
+                <div className="flex-grow overflow-y-auto space-y-3 pr-1">
                     {suggestions.length > 0 ? (
-                        suggestions.map(({ member }) => (
-                            <div key={member.id} className="p-3 bg-slate-700/50 rounded-lg flex justify-between items-center">
-                                <div>
-                                    <p className="font-medium text-primary">{member.name}</p>
-                                    <p className="text-[10px] text-slate-400">House: {member.houseNo} | Age: {new Date().getFullYear() - new Date(member.dob).getFullYear()}</p>
+                        suggestions.map(({ member, score }) => (
+                            <div key={member.id} className="p-3 bg-white dark:bg-slate-700/50 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-primary transition-all group flex items-center justify-between">
+                                <div className="flex-grow min-w-0">
+                                    <div className="flex items-center gap-2">
+                                        <p className="font-bold text-slate-900 dark:text-white truncate">{member.name}</p>
+                                        <span className={`text-[9px] font-black px-1.5 py-0.5 rounded uppercase ${score > 70 ? 'bg-success/10 text-success' : 'bg-primary/10 text-primary'}`}>
+                                            {Math.min(score, 100)}% Match
+                                        </span>
+                                    </div>
+                                    <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">H.No {member.houseNo} | Age {new Date().getFullYear() - new Date(member.dob).getFullYear()}</p>
+                                    <p className="text-[9px] text-slate-400 uppercase tracking-tighter mt-1">HOF: {member.hofName}</p>
                                 </div>
-                                <button onClick={() => handleLink(member as any)} className="p-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30"><LinkIcon className="w-4 h-4"/></button>
+                                <button onClick={() => handleLink(member)} className="ml-3 p-2.5 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all active:scale-90">
+                                    <LinkIcon className="w-5 h-5"/>
+                                </button>
                             </div>
                         ))
                     ) : (
-                        <p className="text-center text-slate-400 p-4">No suggestions found in Census.</p>
+                        <div className="text-center py-10">
+                            <AlertTriangleIcon className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
+                            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">No confident matches found in Census data.</p>
+                        </div>
                     )}
                 </div>
-                 <div className="flex justify-end mt-6">
-                    <button onClick={onClose} className="px-4 py-2 bg-slate-700 rounded text-white text-sm">Close</button>
+                
+                <div className="flex justify-end mt-6 pt-4 border-t border-slate-100 dark:border-slate-700">
+                    <button onClick={onClose} className="px-6 py-2 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-white rounded-lg text-xs font-bold transition-all">Close</button>
                 </div>
             </div>
         </div>
@@ -283,49 +336,49 @@ const VoterCard: React.FC<{ voter: Voter, onEdit: (voter: Voter) => void }> = ({
     };
 
     return (
-        <div className={`bg-slate-800 rounded-xl p-4 border-l-4 ${statusColors[voter.status]} relative shadow-sm`}>
+        <div className={`bg-white dark:bg-slate-800 rounded-xl p-4 border-l-4 ${statusColors[voter.status]} relative shadow-sm border border-slate-100 dark:border-slate-800 transition-colors`}>
             {isLinkerOpen && <VoterLinker voter={voter} isOpen={isLinkerOpen} onClose={() => setLinkerOpen(false)} />}
             
             <div className="flex justify-between items-start">
-                <div className="flex-grow">
-                    <h3 className="font-bold text-white text-base leading-none">{voter.name}</h3>
+                <div className="flex-grow min-w-0">
+                    <h3 className="font-bold text-slate-900 dark:text-white text-base leading-none truncate">{voter.name}</h3>
                     <div className="flex items-center gap-2 mt-1.5 mb-2">
-                        <span className="text-[11px] bg-slate-900 text-sky-400 px-2 py-0.5 rounded font-mono font-bold tracking-wider">{voter.epicNo}</span>
+                        <span className="text-[11px] bg-slate-50 dark:bg-slate-900 text-sky-500 px-2 py-0.5 rounded font-mono font-bold tracking-wider border border-slate-100 dark:border-slate-700">{voter.epicNo}</span>
                         {voter.status !== 'Active' && <span className="text-[9px] bg-danger/10 text-danger px-1.5 py-0.5 rounded uppercase font-extrabold">{voter.status}</span>}
                     </div>
                     
-                    <div className="grid grid-cols-2 gap-y-1 text-[11px] text-slate-400">
-                        <p>House: <span className="text-slate-200 font-bold">{voter.houseNo}</span></p>
-                        <p>Age: <span className="text-slate-200 font-bold">{voter.age}</span></p>
-                        <p>Gender: <span className="text-slate-200 font-bold">{voter.gender}</span></p>
-                        {voter.partSerialNo && <p>Sl No: <span className="text-slate-200 font-bold">{voter.partSerialNo}</span></p>}
+                    <div className="grid grid-cols-2 gap-y-1 text-[11px] text-slate-500 dark:text-slate-400">
+                        <p>House: <span className="text-slate-800 dark:text-slate-200 font-bold">{voter.houseNo}</span></p>
+                        <p>Age: <span className="text-slate-800 dark:text-slate-200 font-bold">{voter.age}</span></p>
+                        <p>Gender: <span className="text-slate-800 dark:text-slate-200 font-bold">{voter.gender}</span></p>
+                        {voter.partSerialNo && <p>Sl No: <span className="text-slate-800 dark:text-slate-200 font-bold">{voter.partSerialNo}</span></p>}
                     </div>
                     
                     {linkedMemberInfo ? (
-                        <div className="mt-3 flex items-center space-x-1.5 bg-emerald-500/5 p-1.5 rounded-lg border border-emerald-500/10">
+                        <div className="mt-3 flex items-center space-x-1.5 bg-success/5 dark:bg-success/10 p-1.5 rounded-lg border border-success/10">
                             <CheckIcon className="w-3.5 h-3.5 text-success" />
-                            <span className="text-[10px] text-success font-medium">Linked: {linkedMemberInfo.memberName} (H.No {linkedMemberInfo.houseNo})</span>
+                            <span className="text-[10px] text-success font-medium truncate">Linked: {linkedMemberInfo.memberName} (H.No {linkedMemberInfo.houseNo})</span>
                         </div>
                     ) : (
-                        <button onClick={() => setLinkerOpen(true)} className="mt-3 flex items-center space-x-1.5 text-[10px] text-primary hover:text-sky-300 font-bold uppercase tracking-tight">
+                        <button onClick={() => setLinkerOpen(true)} className="mt-3 flex items-center space-x-1.5 text-[10px] text-primary hover:text-sky-600 font-bold uppercase tracking-tight transition-colors">
                             <LinkIcon className="w-3.5 h-3.5" />
                             <span>Link to Census</span>
                         </button>
                     )}
                 </div>
                 
-                <div className="flex flex-col gap-2">
-                    <button onClick={() => setMenuOpen(!isMenuOpen)} className="p-1 text-slate-500 hover:text-white"><MoreVerticalIcon className="w-5 h-5"/></button>
+                <div className="flex flex-col gap-2 shrink-0 ml-2">
+                    <button onClick={() => setMenuOpen(!isMenuOpen)} className="p-1 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"><MoreVerticalIcon className="w-5 h-5"/></button>
                     {isMenuOpen && (
-                        <div className="absolute right-4 top-12 bg-slate-900 border border-slate-700 rounded-lg shadow-xl z-30 py-2 w-32 overflow-hidden animate-fade-in">
-                            <button onClick={() => { onEdit(voter); setMenuOpen(false); }} className="w-full text-left px-3 py-2 text-xs text-white hover:bg-slate-700 flex items-center gap-2">
+                        <div className="absolute right-4 top-12 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl z-30 py-2 w-32 overflow-hidden animate-fade-in transition-colors">
+                            <button onClick={() => { onEdit(voter); setMenuOpen(false); }} className="w-full text-left px-3 py-2 text-xs text-slate-700 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2">
                                 <EditIcon className="w-3 h-3" /> Edit
                             </button>
-                            <button onClick={() => handleMark('Expired')} className="w-full text-left px-3 py-2 text-xs text-rose-400 hover:bg-slate-700">Mark Expired</button>
-                            <button onClick={() => handleMark('Shifted')} className="w-full text-left px-3 py-2 text-xs text-amber-400 hover:bg-slate-700">Mark Shifted</button>
-                            <button onClick={() => handleMark('Active')} className="w-full text-left px-3 py-2 text-xs text-emerald-400 hover:bg-slate-700">Mark Active</button>
-                            <div className="border-t border-slate-800 my-1"></div>
-                            <button onClick={handleDelete} className="w-full text-left px-3 py-2 text-xs text-slate-500 hover:bg-rose-500 hover:text-white flex items-center gap-2">
+                            <button onClick={() => handleMark('Expired')} className="w-full text-left px-3 py-2 text-xs text-rose-500 hover:bg-slate-50 dark:hover:bg-slate-800">Mark Expired</button>
+                            <button onClick={() => handleMark('Shifted')} className="w-full text-left px-3 py-2 text-xs text-amber-600 dark:hover:bg-slate-800">Mark Shifted</button>
+                            <button onClick={() => handleMark('Active')} className="w-full text-left px-3 py-2 text-xs text-emerald-600 dark:hover:bg-slate-800">Mark Active</button>
+                            <div className="border-t border-slate-100 dark:border-slate-800 my-1"></div>
+                            <button onClick={handleDelete} className="w-full text-left px-3 py-2 text-xs text-slate-400 hover:bg-rose-500 hover:text-white flex items-center gap-2">
                                 <TrashIcon className="w-3 h-3" /> Delete
                             </button>
                         </div>
@@ -368,7 +421,7 @@ const Elections: React.FC = () => {
     };
 
     return (
-        <div className="p-4 relative min-h-full flex flex-col">
+        <div className="p-4 relative min-h-full flex flex-col transition-colors">
             <VoterModal 
                 isOpen={isVoterModalOpen} 
                 onClose={() => { setIsVoterModalOpen(false); setEditingVoter(undefined); }} 
@@ -376,35 +429,35 @@ const Elections: React.FC = () => {
                 existingVoter={editingVoter} 
             />
 
-            <div className="bg-slate-800 p-4 rounded-xl mb-6 flex items-center justify-between shadow-lg border border-slate-700">
+            <div className="bg-white dark:bg-slate-800 p-4 rounded-xl mb-6 flex items-center justify-between shadow-sm border border-slate-100 dark:border-slate-800 transition-colors">
                 <div className="flex items-center space-x-3">
-                    <div className="bg-primary/20 text-primary p-2.5 rounded-lg">
+                    <div className="bg-primary/10 text-primary p-2.5 rounded-lg transition-colors">
                         <VoterListIcon className="w-6 h-6"/>
                     </div>
                     <div>
-                        <h2 className="text-lg font-bold text-white">Electoral Roll</h2>
+                        <h2 className="text-lg font-black text-slate-900 dark:text-white leading-tight">Electoral Roll</h2>
                         <p className="text-slate-400 text-[10px] uppercase tracking-wider font-bold">Total: {voters.length} Electors</p>
                     </div>
                 </div>
                 <button 
                     onClick={autoLinkVoters}
-                    className="flex items-center space-x-1.5 py-1.5 px-3 bg-primary/10 text-primary border border-primary/20 rounded-lg text-[11px] font-bold hover:bg-primary/20 transition-all uppercase"
+                    className="flex items-center space-x-1.5 py-1.5 px-3 bg-primary text-white rounded-lg text-[10px] font-black hover:bg-sky-600 transition-all uppercase tracking-widest shadow-lg shadow-primary/20 active:scale-95"
                 >
                     <SparklesIcon className="w-3.5 h-3.5" />
                     <span>Auto Link</span>
                 </button>
             </div>
 
-            <div className="space-y-3 mb-6">
+            <div className="space-y-4 mb-6">
                 <div className="relative">
                     <input
                         type="text"
                         placeholder="Search name, epic, or house..."
                         value={searchTerm}
                         onChange={e => setSearchTerm(e.target.value)}
-                        className="w-full p-3 pl-10 border border-slate-700 rounded-xl bg-slate-800 text-white text-sm placeholder-slate-500 focus:ring-2 focus:ring-primary focus:outline-none"
+                        className="w-full p-3 pl-11 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm placeholder-slate-400 focus:ring-2 focus:ring-primary focus:outline-none transition-all"
                     />
-                    <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-5 h-5" />
+                    <SearchIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 transition-colors" />
                 </div>
                 
                 <div className="flex gap-2 overflow-x-auto pb-1 hide-scrollbar">
@@ -412,7 +465,7 @@ const Elections: React.FC = () => {
                         <button
                             key={status}
                             onClick={() => setStatusFilter(status as any)}
-                            className={`px-4 py-1.5 rounded-full text-[10px] font-extrabold uppercase whitespace-nowrap border transition-all ${statusFilter === status ? 'bg-primary border-primary text-white shadow-lg shadow-primary/20' : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-500'}`}
+                            className={`px-4 py-2 rounded-full text-[10px] font-black uppercase whitespace-nowrap border transition-all ${statusFilter === status ? 'bg-primary border-primary text-white shadow-lg shadow-primary/20' : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-slate-400'}`}
                         >
                             {status}
                         </button>
@@ -426,11 +479,11 @@ const Elections: React.FC = () => {
                         <VoterCard key={voter.id} voter={voter} onEdit={(v) => { setEditingVoter(v); setIsVoterModalOpen(true); }} />
                     ))
                 ) : (
-                    <div className="text-center py-16 bg-slate-800/30 rounded-2xl border border-dashed border-slate-700">
-                        <div className="bg-slate-800 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
-                             <SearchIcon className="w-6 h-6 text-slate-600" />
+                    <div className="text-center py-16 bg-slate-50/50 dark:bg-slate-900/20 rounded-3xl border border-dashed border-slate-200 dark:border-slate-700">
+                        <div className="bg-white dark:bg-slate-800 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm">
+                             <SearchIcon className="w-6 h-6 text-slate-300 dark:text-slate-600" />
                         </div>
-                        <p className="text-slate-500 text-sm">No electors found matching criteria.</p>
+                        <p className="text-slate-500 font-bold text-sm tracking-tight">No electors found matching criteria.</p>
                     </div>
                 )}
             </div>

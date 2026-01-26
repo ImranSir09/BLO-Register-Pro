@@ -74,7 +74,6 @@ const Dashboard: React.FC = () => {
     const { voters } = useElections();
     const [activeTab, setActiveTab] = useState<'census' | 'election'>('census');
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const APP_VERSION = "v2.5.1";
 
     const stats = useMemo(() => {
         const allMembers = households.flatMap(h => h.members);
@@ -150,7 +149,7 @@ const Dashboard: React.FC = () => {
                     Dashboard
                 </h2>
                 <div className="text-[9px] font-black bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-2.5 py-1 rounded-md border border-slate-200 dark:border-slate-700 font-mono tracking-tighter transition-colors uppercase">
-                    Live Status {APP_VERSION}
+                    Live Status
                 </div>
             </div>
 

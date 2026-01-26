@@ -2,6 +2,27 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import type { Household, Member, Voter, Settings, VoterStatus, MemberStatus } from '../types';
 
+// --- Helper Functions ---
+const getAge = (dob: string): number => {
+  if (!dob) return 0;
+  const birthDate = new Date(dob);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+};
+
+const normalizeName = (name: string): string => {
+  return (name || '')
+    .toLowerCase()
+    .replace(/(sh\.|smt\.|mr\.|mrs\.|miss|ms\.|late|md\.)/g, '')
+    .replace(/\s+/g, '')
+    .trim();
+};
+
 // --- useLocalStorage Hook ---
 function useLocalStorage<T,>(key: string, initialValue: T): [T, React.Dispatch<React.SetStateAction<T>>] {
   const [storedValue, setStoredValue] = useState<T>(() => {
@@ -185,18 +206,28 @@ export const ElectionProvider: React.FC<{ children: ReactNode }> = ({ children }
   const autoLinkVoters = () => {
     let linkedCount = 0;
     const newVoters = voters.map(voter => {
-        if (voter.linkedMemberId) return voter; // Already linked
+        if (voter.linkedMemberId) return voter; 
 
-        // 1. Match House Number (Case insensitive)
+        // 1. Find potential household by house number
         const household = households.find(h => h.houseNo.toLowerCase() === voter.houseNo.toLowerCase());
         if (!household) return voter;
 
-        // 2. Match Name (Case insensitive, ignore spaces) and Gender
-        const vName = voter.name.toLowerCase().replace(/\s+/g, '');
-        const member = household.members.find(m => 
-            m.name.toLowerCase().replace(/\s+/g, '') === vName && 
-            m.gender.toLowerCase() === voter.gender.toLowerCase()
-        );
+        // 2. Perform robust matching
+        const vNameNorm = normalizeName(voter.name);
+        
+        const member = household.members.find(m => {
+            const mNameNorm = normalizeName(m.name);
+            const mAge = getAge(m.dob);
+            const ageDiff = Math.abs(mAge - voter.age);
+            
+            // Robust check: Exact normalized name match OR one contains the other (fuzzy)
+            // Plus exact gender and tight age proximity (max 3 years for auto-link)
+            const nameMatch = mNameNorm === vNameNorm || mNameNorm.includes(vNameNorm) || vNameNorm.includes(mNameNorm);
+            const genderMatch = m.gender.toLowerCase() === voter.gender.toLowerCase();
+            const ageMatch = ageDiff <= 3;
+
+            return nameMatch && genderMatch && ageMatch;
+        });
 
         if (member) {
             linkedCount++;
@@ -207,9 +238,9 @@ export const ElectionProvider: React.FC<{ children: ReactNode }> = ({ children }
 
     if (linkedCount > 0) {
         setVoters(newVoters);
-        addToast(`Smart Linked ${linkedCount} voters to census data!`, 'success');
+        addToast(`Successfully Smart-Linked ${linkedCount} voters!`, 'success');
     } else {
-        addToast("No new matches found for auto-linking.", 'info');
+        addToast("No confident matches found for auto-linking.", 'info');
     }
   };
 
