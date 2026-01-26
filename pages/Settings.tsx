@@ -71,6 +71,7 @@ const Settings: React.FC = () => {
     const { households, setHouseholds } = useHouseholds();
     const { voters, setVoters } = useElections();
     const { addToast } = useToast();
+    const APP_VERSION = "v2.5.1";
     
     const [isEditingProfile, setIsEditingProfile] = useState(false);
     const restoreFileRef = useRef<HTMLInputElement>(null);
@@ -260,6 +261,11 @@ const Settings: React.FC = () => {
                     <TrashIcon className="w-4 h-4" />
                     <span>Clear Local Data</span>
                 </button>
+             </div>
+
+             <div className="text-center py-4">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">BLO Register Pro {APP_VERSION}</p>
+                <p className="text-[9px] text-slate-500 mt-1 font-mono">Developed for Booth Level Officers</p>
              </div>
         </div>
     );
