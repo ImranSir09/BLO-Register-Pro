@@ -5,35 +5,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>BLO Pro</title>
 
-<link rel="manifest" href="./public/manifest.json">
+<link rel="manifest" href="/BLO-Register-Pro/manifest.json">
 <meta name="theme-color" content="#0d6efd">
 
 <script src="https://cdn.tailwindcss.com"></script>
 
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@19",
-    "react-dom/client": "https://esm.sh/react-dom@19/client",
-    "recharts": "https://esm.sh/recharts@2",
-    "xlsx": "https://esm.sh/xlsx",
-    "jspdf": "https://esm.sh/jspdf",
-    "jspdf-autotable": "https://esm.sh/jspdf-autotable"
-  }
+<script>
+tailwind.config = {
+darkMode: 'class',
+theme: {
+extend: {
+colors: {
+primary: 'rgb(14 165 233)',
+secondary: 'rgb(100 116 139)',
+success: 'rgb(16 185 129)',
+danger: 'rgb(244 63 94)',
+warning: 'rgb(245 158 11)',
+info: 'rgb(6 182 212)',
+light: 'rgb(241 245 249)',
+dark: 'rgb(30 41 59)'
+}
+}
+}
 }
 </script>
 
-<link rel="stylesheet" href="./index.css">
+<link rel="stylesheet" href="/BLO-Register-Pro/index.css">
 </head>
 
-<body>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-300">
 <div id="root"></div>
 
-<script type="module" src="./index.js"></script>
+<script type="module" src="/BLO-Register-Pro/index.tsx"></script>
 
 <script>
 if ("serviceWorker" in navigator) {
-navigator.serviceWorker.register("./public/service-worker.js");
+navigator.serviceWorker.register("/BLO-Register-Pro/service-worker.js");
 }
 </script>
 
