@@ -1,4 +1,4 @@
-const CACHE_NAME = 'blo-pro-v3';
+const CACHE_NAME = 'blo-pro-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
